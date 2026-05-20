@@ -1,0 +1,13 @@
+/project/vendor/
+/project/node_modules/
+/project/.env
+/project/storage/*.key
+/project/storage/framework/cache/data/*
+/project/storage/framework/sessions/*
+/project/storage/framework/views/*
+/project/storage/logs/*
+/project/.phpunit.result.cache
+/project/public/storage
+.env
+.idea/
+.vscode/

@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class PlanFeature extends Model
+{
+    use HasFactory;
+    protected $connection = 'mysql';
+    protected $fillable = [
+        "name",
+        "slug",
+        "description",
+        "category_feature_id",
+        "appearance_type",
+    ];
+    public const ACTIVE = 1;
+    public const INACTIVE = 0;
+    public static $STATUS = [
+        self::ACTIVE => "Active",
+        self::INACTIVE => "InActive"
+    ];
+
+    public function categoryFeatures()
+    {
+        return $this->belongsTo(PlanCategoryFeature::class, "category_feature_id", "id");
+    }
+    public function plans()
+    {
+        return $this->belongsToMany(Plan::class, 'feature_plan', 'plan_feature_id', 'plan_id');
+    }
+
+}
