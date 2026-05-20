@@ -126,4 +126,14 @@ class DomainChecker extends Controller
                 ->orWhere('additional', 'like', '%' . $ip . '%');
         })->exists();
     }
+
+    public static function isSpecialPage(string|null $url, string|null $keyword): bool
+    {
+        if (!$url || !$keyword)
+            return false;
+
+        $pageUrl = parse_url($url, PHP_URL_PATH);
+
+        return rtrim($pageUrl, '/') === '/' . ltrim($keyword, '/');
+    }
 }

@@ -893,21 +893,24 @@ class PaymentController extends ApiController
             $orderData[$datas['key']] = $datas['id'];
         }
 
-        Order::create($orderData);
+        $order = Order::create($orderData);
 
-        self::fbEvent(
-            eventName: FacebookEvent::INITIATE_CHECKOUT,
-            request: $request,
-            uid: $this->uid,
-            assetDetails: $assetDetails,
-            name: $user_data->name,
-            email: $user_data->email,
-            contact: $user_data->contact_no,
-            currency: $currency,
-            amount: $amount,
-            detail: json_decode(json_encode($eventData)),
-            isOfferPixel: $isMeta
-        );
+        if ($order && $order->fbc != null) {
+            self::fbEvent(
+                eventName: FacebookEvent::INITIATE_CHECKOUT,
+                request: $request,
+                uid: $this->uid,
+                assetDetails: $assetDetails,
+                name: $user_data->name,
+                email: $user_data->email,
+                contact: $user_data->contact_no,
+                currency: $currency,
+                amount: $amount,
+                detail: json_decode(json_encode($eventData)),
+                isOfferPixel: $isMeta,
+                url: $url
+            );
+        }
 
         self::googleEvent(
             eventName: GoogleEnum::INITIATE_CHECKOUT,
@@ -1336,7 +1339,7 @@ class PaymentController extends ApiController
         }
     }
 
-    private static function fbEvent(FacebookEvent $eventName, Request $request, $uid, $assetDetails, $name, $email, $contact, $currency, $amount, $detail, $isOfferPixel): void
+    private static function fbEvent(FacebookEvent $eventName, Request $request, $uid, $assetDetails, $name, $email, $contact, $currency, $amount, $detail, $isOfferPixel, $url): void
     {
         $ids = self::getIdsData($assetDetails);
         if ($ids) {
@@ -1346,6 +1349,7 @@ class PaymentController extends ApiController
                 name: $name,
                 email: $email,
                 phone: $contact,
+                url: $url,
                 purchaseData: [
                     'uid' => $uid,
                     'currency' => $currency,
@@ -1713,7 +1717,11 @@ class PaymentController extends ApiController
 
             $isByOffice = $saveData['is_e_mandate'] || $saveData['by_sales_team'];
 
-            if ((in_array($assetDetails, self::$OFFER_IDS) || $isOfferSub) && !$isByOffice) {
+            if (
+                !empty($metaData['order']) && 
+                !empty($metaData['order']->fbc) && 
+                (in_array($assetDetails, self::$OFFER_IDS) || $isOfferSub) && !$isByOffice
+            ) {
                 $callFBEvents = true;
             }
 
@@ -1722,10 +1730,23 @@ class PaymentController extends ApiController
 //            }
         }
 
+        
         if ($callFBEvents) {
             self::fbEvent(
-            /*is_numeric($details->plan_id) ? FacebookEvent::SUBSCRIBE :*/ FacebookEvent::PURCHASE,
-                $request, $user_data->uid, $details->plan_id, $name, $email, $contact, "INR", /*$isOfferPixel ? 299 :*/ $totalPaidAmount, $eventData, $isOfferPixel
+            /*is_numeric($details->plan_id) ? FacebookEvent::SUBSCRIBE :*/ 
+                FacebookEvent::PURCHASE,
+                $request, 
+                $user_data->uid, 
+                $details->plan_id, 
+                $name, 
+                $email, 
+                $contact, 
+                "INR", 
+                // /*$isOfferPixel ? 299 :*/
+                $totalPaidAmount, 
+                $eventData, 
+                $isOfferPixel,
+                $url
             );
 
 //            self::fbEvent(FacebookEvent::SELLING, $request, $user_data->uid, $details->plan_id, $name, $email, $contact, "INR", /*$isOfferPixel ? 299 :*/ $totalPaidAmount, $eventData, $isOfferPixel);
@@ -1768,6 +1789,7 @@ class PaymentController extends ApiController
         $paymentIntentId = null;
         $exchange_rate = 1;
         $fees = 0;
+        $orderData = null;
 
         try {
             if (strtolower($paymentGateway->name) === 'stripe') {
@@ -1963,7 +1985,8 @@ class PaymentController extends ApiController
             'sales_person_id_for_report' => $sales_person_id_for_report,
             'orderData' => $statusCheckResponse ?? null,
             '$transaction' => $transaction ?? null,
-            '$charge' => $charge ?? null
+            '$charge' => $charge ?? null,
+            'order' => $orderData
         ];
     }
 

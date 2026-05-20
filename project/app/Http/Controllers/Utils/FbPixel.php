@@ -18,16 +18,14 @@ class FbPixel
 {
 
     private static Api|null $apiInstance = null;
-    private static string $craftyPixelId = '1189209196173991';
     private static string $offerPixelId = '1331905735018339';
     private static string $accessToken = 'EAAxpeR8ZAouIBO39ZBxUcZCTl7uZCSXJF5hGqnJpWYLSJUw9agvi0ZB06qRQHpcuFDpL9o8xPghM0YlkfKKx8IX6MZCtYzmf3gUFwVg5fK2tthxuVQIMXV9XXKlHCWTZB4JZAseWjQVv2nXEP22iwpdFjZColH8gYmV3C5Lq3lTKcLQwmVAKKwZAcm4iuMXJp6ogP5xQZDZD';
-
+    private static string $graphicBundlePixelId = '1890577194965709';
+    private static string $graphicBundleAccessToken = 'EAANo421BgJsBRS0Ao7i6yMt1RzRTQu3w7ZB5qLHhnbZAAv7ZCbRnap7Fz4SWcZB6Ap80VJG9fvINqqAsRkmUOcTqZA4SJcC1MW0t4ZBRtTk7oA96gr7z2Av0v71UlRQ3TvqR8pluMDBKYa3KOK34YvtlD4hXlNbVHpnzUvNZBvNGF2ardTRmZB4ZBFKh25ts4lAZDZD';
     // Initialize API only once
-    private static function initApi(): void
+    private static function initApi(string $accessToken): void
     {
-        if (self::$apiInstance === null) {
-            self::$apiInstance = Api::init(null, null, self::$accessToken);
-        }
+        self::$apiInstance = Api::init(null, null, $accessToken);
     }
 
     public static function purchaseEvent(FacebookEvent $eventName, Request $request, ?string $name = null, ?string $email = null, ?string $phone = null, ?string $url = null, array|null $purchaseData = null, $isOfferPixel = false): void
@@ -49,22 +47,30 @@ class FbPixel
 
     public static function purchaseJobEvent(
         FacebookEvent $eventName,
-        ?string       $clientIp,
-        ?string       $userAgent,
-        ?string       $fbclid,
-        ?string       $fbp,
-        ?string       $name = null,
-        ?string       $email = null,
-        ?string       $phone = null,
-        ?string       $url = null,
-        ?array        $purchaseData = null,
-        bool          $isOfferPixel = false
-    ): void /*: EventResponse*/
-    {
+        ?string $clientIp,
+        ?string $userAgent,
+        ?string $fbclid,
+        ?string $fbp,
+        ?string $name = null,
+        ?string $email = null,
+        ?string $phone = null,
+        ?string $url = null,
+        ?array $purchaseData = null,
+        bool $isOfferPixel = false
+    ): void /*: EventResponse*/ {
         try {
 
-            self::initApi();
+            $isGraphicsBundle = $url != null ? DomainChecker::isSpecialPage($url, 'graphics-bundle') : false;
 
+            $pixelId = $isGraphicsBundle
+                ? self::$graphicBundlePixelId
+                : self::$offerPixelId;
+
+            $accessToken = $isGraphicsBundle
+                ? self::$graphicBundleAccessToken
+                : self::$accessToken;
+
+            self::initApi($accessToken);
             if ($purchaseData) {
                 $userAgent = $purchaseData['userAgent'] ?? $userAgent ?? null;
                 $clientIp = $purchaseData['clientIp'] ?? $clientIp;
@@ -136,7 +142,7 @@ class FbPixel
 
             // Send event to Facebook
 //            $eventRequest = new EventRequest($isOfferPixel ? self::$offerPixelId : self::$craftyPixelId);
-            $eventRequest = new EventRequest(self::$offerPixelId);
+            $eventRequest = new EventRequest($pixelId);
             $eventRequest->setEvents([$event]);
 //            $eventRequest->setTestEventCode('TEST93287');
 
