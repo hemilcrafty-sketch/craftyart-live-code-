@@ -1,0 +1,632 @@
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    /* Adjust width as needed */
+    font-size: 14px;
+}
+
+.category {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+.subcategories {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.subcategory {
+    padding: 2px 40px;
+    cursor: pointer;
+    /* border-bottom: 1px solid #ccc; */
+}
+
+.subcategories .subcategory {
+    padding-left: 20px;
+}
+
+.input-subcategory-dropbox {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    font-family: 'Inter', sans-serif;
+    color: #131e22;
+    font-weight: 400;
+    height: 45px;
+    border-color: #d4d4d4;
+    letter-spacing: .035em;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+    padding: 8px 25px;
+    position: relative;
+}
+
+.parent-category-input {
+    display: none;
+}
+
+.sub-category-input {
+    display: none;
+}
+
+.parent-category-input.show {
+    display: block;
+    z-index: 999;
+    position: absolute;
+    width: 100%;
+}
+
+.sub-category-input.show {
+    display: block;
+    z-index: 999;
+    position: absolute;
+    width: 100%;
+}
+
+li.category.none-option {
+    background-color: #efefef87;
+    height: 29px;
+    padding: 5px 20px;
+}
+
+li.subcategory.none-option {
+    background-color: #efefef87;
+    height: 29px;
+    padding: 5px 20px;
+}
+
+
+
+.input-subcategory-dropbox i.fa.down-arrow-dropbox {
+    position: absolute;
+    right: 8px;
+    color: #131e22;
+    font-weight: 700;
+    top: 30%;
+}
+
+.has-children {
+    font-weight: bold;
+}
+
+.has-parent {
+    font-weight: 300;
+}
+
+.form-group.category-dropbox-wrap {
+    position: relative;
+}
+
+ul.dropdown-menu-ul.filter-wrap-list {
+    overflow-y: scroll;
+    height: auto;
+    max-height: 320px;
+}
+
+.input-subcategory-dropbox.unset-bottom-border {
+    border-bottom: unset;
+}
+
+input#categoryFilter {
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.custom-dropdown.parent-category-input.show {
+    background-color: #FFF;
+    border: 1px solid #ced4da;
+    border-top: 0;
+}
+
+.custom-dropdown.sub-category-input.show {
+    background-color: #FFF;
+    border: 1px solid #ced4da;
+    border-top: 0;
+}
+
+
+
+
+.bootstrap-tagsinput {
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+.tag {
+    display: inline-block;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+li.selected>span:first-child {
+    background-color: #103dd5;
+    color: #FFF;
+    padding: 2px 5px;
+}
+
+.pd-20.card-box.mb-30 hr {
+    background: #000;
+}
+
+.popup-container {
+    position: absolute;
+    bottom: -38px;
+    left: 17px;
+    background-color: #ffffff;
+    border: 1px solid #6c757d;
+    padding: 5px 15px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    display: none;
+    width: fit-content;
+    border-radius: 5px;
+    padding-left: 15px;
+}
+
+.popup-container p {
+    margin: 0;
+    display: inline;
+    /* To make the icon and text appear inline */
+}
+
+.popup-container .required-icon {
+    color: #ffffff;
+    margin-right: 6px;
+    font-size: 16px;
+    background: #ffcc00;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+}
+
+.select2-selection__choice.ui-sortable-handle {
+    display: flex;
+    flex-direction: row-reverse;
+    /* Reverses the order of elements */
+    align-items: center;
+    /* Aligns elements vertically */
+}
+
+.select2-selection__choice__remove {
+    margin-left: 5px;
+    /* Add some space between the remove icon and the text */
+}
+
+.form-container {
+    max-width: 100%;
+    /* Set a maximum width for responsiveness */
+    padding: 20px;
+    /* Add some padding for visual consistency */
+    border: 1px solid #ddd;
+    /* Optional border for a defined area */
+    border-radius: 5px;
+    /* Add a subtle rounded corner effect */
+}
+
+.form-container h2 {
+    text-align: center;
+    /* Center the heading */
+    margin-bottom: 15px;
+    /* Add some space after the heading */
+}
+
+.feature-table {
+    width: 100%;
+    /* Ensure the table fills the container */
+    border-collapse: collapse;
+    /* Remove default table spacing */
+}
+
+.feature-table th,
+.feature-table td {
+    padding: 10px;
+    /* Add some padding for readability */
+    border: 1px solid #ddd;
+    /* Create cell borders */
+    text-align: left;
+    /* Align content to the left */
+}
+
+.feature-table th {
+    background-color: #f2f2f2;
+    /* Lighten the header background */
+}
+
+.feature-checkbox {
+    vertical-align: middle;
+    /* Align checkboxes vertically */
+}
+
+.selected {
+    background-color: lightblue;
+}
+
+.form-group.form-container.tableview {
+    height: 450px;
+    overflow-y: auto;
+}
+
+
+/* ccs */
+
+.form-group.form-container.tableview {
+    height: 450px;
+    overflow-y: auto;
+    position: relative;
+    padding: 0;
+}
+
+.feature-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Ensure borders collapse properly */
+}
+
+.feature-table thead,
+.form-group.form-container.tableview h6 {
+    position: sticky;
+    top: -1px;
+    background-color: #fff;
+}
+
+.feature-table th,
+.feature-table td,
+.form-group.form-container.tableview h6 {
+    padding: 8px;
+    border: 1px solid #ccc;
+    /* Add border for cells and the h6 element */
+}
+
+.feature-table tbody {
+    max-height: calc(100% - 72px);
+    /* Adjust max-height as needed to accommodate h6 height and header cell padding */
+    overflow-y: auto;
+}
+
+.center-column {
+    text-align: center !important;
+}
+
+input#msgVarValue {
+    height: 16px;
+}
+
+.input-group.custom span strong {
+    font-size: 11px;
+}
+
+.input-group.custom .sub-element {
+    margin: 0px 5px;
+}
+
+input.form-control.meta_data_input {
+    width: 320px;
+}
+
+.buttons-list {
+    display: flex;
+    width: 411px;
+    gap: 10px;
+}
+
+li.subcategory.has-parent.selected,
+li.subcategory.has-children.selected,
+li.category.has-parent.selected,
+li.category.has-children.selected {
+    background-color: unset;
+}
+
+li.category.has-children.selected,
+li.subcategory.has-children.selected {
+    background-color: unset;
+}
+
+/* switch button */
+
+/* The switch - the box around the slider */
+.switch-new {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch-new input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider (the colored part of the switch) */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 18px;
+    left: -4px;
+    bottom: 1px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+    font-size: 80%;
+    font-weight: 400;
+}
+
+/* When the checkbox is checked, add a blue background to the slider */
+.switch-new input:checked+.slider {
+    /* background-color: #2196F3; */
+    background-color: rgb(0, 89, 178);
+    border-color: rgb(0, 89, 178);
+    box-shadow: rgb(0, 89, 178) 0px 0px 0px 11px inset;
+}
+
+/* When the checkbox is checked, position the slider to the right */
+.switch-new input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+.row-header {
+    display: flex;
+}
+
+.row-header button.btn.btn-primary {
+    height: max-content;
+    margin: 16px 0;
+}
+
+.row-header .col-sm-12.col-md-6 {
+    position: absolute;
+    right: 50px;
+    max-width: max-content;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background: unset !important;
+}
+
+.row-setting-popup {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 205px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.row-setting-popup ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.row-setting-popup ul li {
+    padding: 8px;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.row-setting-popup ul li:last-child {
+    border-bottom: none;
+}
+
+.row-setting-popup ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.btn-setting {
+    position: relative;
+}
+
+/*Card Analytics User*/
+
+.card-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    width: 12.33%;
+    margin: 0 10px;
+    font-size: 13px;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.icon i {
+    font-size: 24px;
+    color: #555;
+}
+
+.content h3 {
+    margin: 12px 0 0;
+    font-size: 1.0em;
+}
+
+.content p {
+    margin: 0;
+    color: #666;
+}
+
+
+
+#userAllList,
+#allActiveSubscriberList,
+#allExpiredSubscriberList,
+#allUpcommingExpiredSubscriberList {
+    display: none;
+}
+
+.section-wrap.active {
+    display: block !important;
+}
+
+.card.active {
+    opacity: 1 !important;
+    border: 1px solid #00000085;
+}
+
+.card.active .icon i,
+.card.active .content h3,
+.card.active .content p,
+.card .icon i,
+.card .content h3,
+.card .content p {
+    color: #fff;
+}
+
+a.card.all-card {
+    background-color: blue;
+    opacity: 0.8;
+}
+
+a.card.active-card {
+    background-color: #008000;
+    opacity: 0.8;
+}
+
+a.card.expired-card {
+    background-color: #ff0000;
+    opacity: 0.8;
+}
+
+a.card.upcomming-card {
+    background-color: #ffa500;
+    opacity: 0.8;
+}
+
+button#import_json {
+    width: max-content;
+}
+
+.editable {
+    cursor: pointer;
+}
+
+.editable input {
+    display: none;
+}
+
+.categoriesList {
+    display: none;
+    width: auto;
+    border: 1px solid #c9bfbf5c;
+    text-align: center;
+    background: #FFF;
+    padding: 10px 22px;
+    border-radius: 6px;
+    position: absolute;
+    z-index: 999;
+    height: auto;
+    max-height: 435px;
+    overflow: auto;
+}
+
+.categoriesList ul li {
+    border-bottom: 1px solid #b5adad21;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #fff;
+    float: right;
+}
+
+.keyword-input .bootstrap-tagsinput {
+    width: 100%;
+}
+
+
+/* @media (max-width: 768px) {
+    .card-container {
+        flex-direction: column;
+    }
+} */
+
+@media (max-width: 480px) {
+    .card {
+        align-items: center;
+        min-width: 19%;
+        font-size: 9px;
+        margin-bottom: 10px;
+    }
+
+    .card-container {
+        gap: 0px;
+    }
+}
+
+
+
+#newCategory span.select2.select2-container.select2-container--default {
+    width: 100% !important;
+}
+
+.form-select {
+    display: block;
+    width: 100%;
+    padding: .375rem 2.25rem .375rem .75rem;
+    border: 1px solid #CED4DA;
+    color: #212529;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}

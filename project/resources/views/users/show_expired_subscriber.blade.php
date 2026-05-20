@@ -1,0 +1,157 @@
+ 
+   @inject('roleManager', 'App\Http\Controllers\Utils\RoleManager')
+ @inject('contentManager', '\App\Http\Controllers\Utils\ContentManager')
+ @inject('helperController', 'App\Http\Controllers\HelperController')
+ @include('layouts.masterhead')
+<div class="main-container">
+    <div class="pd-ltr-20 xs-pd-20-10">
+        <div class="min-height-200px">
+            <div class="card-box mb-30">
+                <div class="pb-20">
+                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-3">
+                                <div class="pd-20">
+                                    <h1>Users</h1>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-9">
+                                <div class="pt-20">
+                                    <form action="{{ route('expired.subscriber.list') }}" method="GET">
+                                        <div class="form-group">
+                                            <div id="DataTables_Table_0_filter" class="dataTables_filter">
+                                                <label>Search:<input type="text" class="form-control" name="query"
+                                                        placeholder="Search here....."
+                                                        value="{{ request()->input('query') }}"></label> <button
+                                                    type="submit" class="btn btn-primary">Search</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-container">
+                            <a class="card" href="{{ route('show_users') }}" data-id="all_user">
+                                <div class="icon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="content">
+                                    <h3>All Users</h3>
+                                    <p><strong>{{ $userCount }}</strong></p>
+                                </div>
+                            </a>
+                            <a class="card" href="{{ route('active.subscriber.list') }}" data-id="active_subscriber">
+                                <div class="icon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="content">
+                                    <h3>Active Subscriber</h3>
+                                    <p><strong>{{ $activeSubscriberCount }}</strong></p>
+                                </div>
+                            </a>
+                            <a class="card active" href="{{ route('expired.subscriber.list') }}"
+                                data-id="expired_subscriber">
+                                <div class="icon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="content">
+                                    <h3>Expired Subscriber</h3>
+                                    <p><strong>{{ $expiredSubscriberCount }}</strong></p>
+                                </div>
+                            </a>
+                            <a class="card" href="{{ route('upcomming_expired.subscriber.list') }}"
+                                data-id="upcomming_expired_subscriber">
+                                <div class="icon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <div class="content">
+                                    <h3>Upcoming Expired Subscriber</h3>
+                                    <p><strong>{{ $upcommingExpiredSubscriberCount }}</strong></p>
+                                </div>
+                            </a>
+                        </div>
+                        <section id="allExpiredSubscriberList">
+                            <div class="col-sm-12 table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Index</th>
+                                            <th>UID</th>
+                                            <th class="datatable-nosort">Picture</th>
+                                            <th>Name</th>
+                                            <th>Email OR Number</th>
+                                            <th>Type</th>
+                                            <th>Premium</th>
+                                            <th>Created At</th>
+                                            <th class="datatable-nosort">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($userArray['users'] as $user)
+                                            <tr>
+                                                <td>{{ $user->id }}</td>
+                                                <td>{{ $user->uid }}</td>
+                                                <td><img src="{{ config('filesystems.storage_url') }}{{ $user->photo_uri }}"
+                                                        style="max-width: 100px; max-height: 100px; width: auto; height: auto" />
+                                                </td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $helperController::getMailOrNumber($user) }}</td>
+                                                <td>{{ $user->login_type }}</td>
+                                                @if ($user->is_premium == '1')
+                                                    <td>TRUE</td>
+                                                @else
+                                                    <td>FALSE</td>
+                                                @endif
+                                                <td>{{ $user->created_at }}</td>
+                                                <td><a href="user_detail/{{ $user->uid }}">Show</a></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12 col-md-5">
+                                    <div class="dataTables_info" id="DataTables_Table_0_info" role="status"
+                                        aria-live="polite">{{ $userArray['count_str'] }}</div>
+                                </div>
+                                <div class="col-sm-12 col-md-7">
+                                    <div class="dataTables_paginate paging_simple_numbers"
+                                        id="DataTables_Table_0_paginate">
+                                        <ul class="pagination">
+                                            {{ $userArray['users']->appends(request()->input())->links('pagination::bootstrap-4') }}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@include('layouts.masterscript')
+<script>
+    $(document).ready(function() {
+        $('.btn-setting').on('click', function() {
+            $('.row-setting-popup').hide();
+            var $popup = $(this).next('.row-setting-popup');
+            $popup.toggle();
+        });
+
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.btn-setting').length) {
+                $('.row-setting-popup').hide();
+            }
+        });
+
+        $(document).on('click', ".card-container .card", function(event) {
+            $(".card").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+</script>
+</body>
+
+</html>

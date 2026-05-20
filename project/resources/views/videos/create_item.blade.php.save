@@ -1,0 +1,369 @@
+ 
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>Laravel</title>
+
+        <!-- Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" type="text/css" href="{{asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/styles/core.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/styles/icon-font.min.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/styles/style.css')}}">
+        <link rel="stylesheet" type="text/css" href="{{asset('assets/vendors/styles/loader.css')}}">
+
+    </head>
+    <body class="antialiased">
+
+        @include('layouts.header')
+
+        <div class="main-container">
+
+            <div id="main_loading_screen" style="display: none;">
+                <div id="loader-wrapper">
+                    <div id="loader"></div>
+                    <div class="loader-section section-left"></div>
+                    <div class="loader-section section-right"></div>
+                </div>
+            </div>
+
+            <div class="pd-ltr-20 xs-pd-20-10">
+                <div class="min-height-200px">
+
+                    <div class="pd-20 card-box mb-30">
+                        <form method="post" id="dynamic_form" enctype="multipart/form-data">
+
+                            <span id="result"></span>
+
+                            @csrf
+                            <div class="form-group" style="display: none;">
+                                <h6>Body Name</h6>
+                                <input id="count" class="form-control" type="textname" name="count" value="0" required>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <h6>Video Name</h6>
+                                        <input class="form-control" type="textname" id="video_name" name="video_name" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <h6>Template id</h6>
+                                        <input class="form-control" type="textname" id="relation_id" name="relation_id" required>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                           
+
+                            <div class="form-group">
+                                <h6>Video Thumb</h6>
+                                <input type="file" id="video_thumb" class="form-control-file form-control height-auto" name="video_thumb" required>
+                            </div>
+
+                            <div class="form-group">
+                                <h6>Video File</h6>
+                                <input type="file" id="video_file" class="form-control-file form-control height-auto" name="video_file" required>
+                            </div>
+
+                            <div class="form-group">
+                                <h6>Zip File</h6>
+                                <input type="file" id="zip_file" class="form-control-file form-control height-auto" name="zip_file" required>
+                            </div>                           
+
+                            <div class="row">
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="form-group">
+                                        <h6>Pages</h6>
+                                        <input class="form-control" id="pages" type="number" name="pages" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-group">
+                                        <h6>Width</h6>
+                                        <input class="form-control" id="width" type="number" name="width" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-group">
+                                        <h6>Height</h6>
+                                        <input class="form-control" id="height" type="number" name="height" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-sm-12">
+                                    <div class="form-group">
+                                        <h6>Watermark Height</h6>
+                                        <input class="form-control" id="watermark_height" type="number" name="watermark_height" value="0" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-12">
+                                    <div class="form-group">
+                                        <h6>Video Type</h6>
+                                        <select id="template_type" class="selectpicker form-control" data-style="btn-outline-primary" name="template_type" required>
+                                            <option value="" disabled="true" selected="true">== Select Template Type ==</option>
+                                            @foreach($datas['templateType'] as $templateType)
+                                                <option value="{{ $templateType->value }}">{{ $templateType->type }}</option>
+                                            @endforeach
+                                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group">
+                                <h6>Editable Image Ids</h6>
+                                <input type="text" class="form-control" data-role="tagsinput" placeholder="Add Image Ids"  id="editable_image_id" name="editable_image_id">
+                            </div>
+                            
+                            <div class="form-group">
+                                <h6>Keyword or Tags</h6>
+                                <input type="text" data-role="tagsinput" placeholder="add tags"  id="keywords" name="keywords">
+                            </div>
+
+                            
+                            <div class="form-group">
+                                <h6>Edit Text</h6>
+                                <div class="col-sm-20">
+                                    <select id="edit_text" class="selectpicker form-control" data-style="btn-outline-primary" name="edit_text">
+                                        <option value="0">FALSE</option>
+                                        <option value="1">TRUE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div id="editable_text_field" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-10 col-sm-12">
+                                        <div class="form-group">
+                                            <h6>Editable Text Ids</h6>
+                                             <input class="form-control" type="textname" id="editable_text_id" name="editable_text_id[]">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 pd-19">
+                                        <div class="form-group">
+                                            <h6 style="opacity: 0;">.</h6>
+                                            <button type="button" name="add_text_id" id="add_text_id" class="btn btn-primary form-control-file">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="dynamic_text_field" style="display: none;"></div>
+                            
+                            <div class="form-group">
+                                <h6>Encrypted</h6>
+                                <div class="col-sm-20">
+                                   <select class="selectpicker form-control" data-style="btn-outline-primary" id="encrypted" name="encrypted">
+                                        <option value="0">FALSE</option>
+                                        <option value="1">TRUE</option>  
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div id="encryption_field" style="display: none;">
+                                <div class="form-group">
+                                    <h6>Encryption Key</h6>
+                                    <input class="form-control" type="textname" id="encryption_key" name="encryption_key">
+                                </div>     
+                            </div>                            
+
+                            <div class="form-group">
+                                <h6>Change Music</h6>
+                                <div class="col-sm-20">
+                                    <select id="change_music" class="selectpicker form-control" data-style="btn-outline-primary" name="change_music">
+                                        <option value="0">FALSE</option>
+                                        <option value="1">TRUE</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h6>Select Main Category</h6>
+                                <div class="col-sm-20">
+                                    <select id="category_id" class="selectpicker form-control" data-style="btn-outline-primary" name="category_id" required>
+                                        <option value="" disabled="true" selected="true">== Select Main Category ==</option>
+                                        @foreach($datas['cat'] as $cat)
+                                            <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            {{ csrf_field() }}
+
+                            <div class="form-group">
+                                <h6>Premium Item</h6>
+                                <div class="col-sm-20">
+                                    <select id="is_premium" class="selectpicker form-control" data-style="btn-outline-primary" name="is_premium">
+                                        <option value="0">FALSE</option>
+                                        <option value="1">TRUE</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <h6>Status</h6>
+                                <div class="col-sm-20">
+                                    <select id="status" class="selectpicker form-control" data-style="btn-outline-primary" name="status">
+                                        <option value="1">LIVE</option>
+                                        <option value="0">NOT LIVE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <input class="btn btn-primary" type="submit" name="submit">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{{asset('assets/vendors/scripts/core.js')}}"></script>
+        <script src="{{asset('assets/vendors/scripts/script.min.js')}}"></script>
+        <script src="{{asset('assets/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js')}}"></script>
+        <script>
+        
+            $('#edit_text').change(function(){
+                if($(this).val() == '1') {
+                    $('#editable_text_id').attr('required','');
+                    var x = document.getElementById("editable_text_field");
+                    x.style.display = "block";
+                   var x1 = document.getElementById("dynamic_text_field");
+                    x1.style.display = "block";
+                    
+                }  else {
+                    $('#editable_text_id').removeAttr('required');
+                    var x = document.getElementById("editable_text_field");
+                    x.style.display = "none";
+                    var x1 = document.getElementById("dynamic_text_field");
+                    x1.style.display = "none";
+                }
+            });
+            
+            
+            $('#encrypted').change(function(){
+                if($(this).val() == '1') {
+                    $('#encryption_key').attr('required','');
+                    var x = document.getElementById("encryption_field");
+                    x.style.display = "block";
+                    
+                }  else {
+                    $('#encryption_key').removeAttr('required');
+                    var x = document.getElementById("encryption_field");
+                    x.style.display = "none";
+                }
+            });
+          
+
+            $('#dynamic_form').on('submit', function(event) {
+                event.preventDefault();
+
+                count = 0;
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    }
+                });
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url:'submit_v_item',
+                    type:'POST',
+                    data:formData,
+                    beforeSend:function() {
+                        var main_loading_screen = document.getElementById("main_loading_screen");
+                        main_loading_screen.style.display = "block";
+                    },
+                    success:function(data)
+                    {
+
+                        if(data.error)
+                        {
+                            var error_html = '';
+                            for(var count = 0; count < data.error.length; count++)
+                            {
+                                error_html += '<p>'+data.error[count]+'</p>';
+                            }
+                            $('#result').html('<div class="alert alert-danger">'+error_html+'</div>');
+                        }
+                        else
+                        {
+                            hideFields();
+                            $('#result').html('<div class="alert alert-success">'+data.success+'</div>');
+                        }
+
+                        setTimeout(function() {
+                            $('#result').html('');
+                        }, 3000);
+
+                    },
+                    error:function(error)
+                    {    
+                        window.alert(error.responseText);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                })
+            });
+            
+             $(document).on('click', '#add_text_id', function(){
+                dynamic_field();
+            });
+            
+             $(document).on('click', '#remove_text_id', function(){
+                $(this).closest(".row").remove();
+            });
+            
+            function dynamic_field() {
+                html = '<div class="row"><div class="col-md-10 col-sm-12"><div class="form-group"><input class="form-control" type="textname" id="editable_text_id" name="editable_text_id[]" required></div></div><div class="col-md-2 pd-19"><div class="form-group"><button type="button" name="remove_text_id" id="remove_text_id" class="btn btn-danger form-control-file">Remove</button></div></div></div>';
+                $('#dynamic_text_field').append(html);
+            }
+
+            function hideFields() {
+
+                $("#category_id").val('');
+                $("#video_name").val('');
+                $("#video_thumb").val('');
+                $("#video_file").val('');
+                $("#zip_file").val('');
+                $("#width").val('');
+                $("#height").val('');
+                $("#editable_image_id").val('');
+                $("#keywords").val('');
+                $("#edit_text").val('0');
+                $("#encrypted").val('0');
+                $("#encryption_key").val('');
+                $("#change_music").val('0');
+                $("#is_premium").val('0');
+                $("#status").val('0');
+
+                $('#dynamic_text_field').empty();
+                
+                var x = document.getElementById("editable_text_field");
+                x.style.display = "none";
+                var x1 = document.getElementById("dynamic_text_field");
+                x1.style.display = "none";
+                
+                var main_loading_screen = document.getElementById("main_loading_screen");
+                main_loading_screen.style.display = "none";
+
+            }
+
+        </script>
+
+    </body>
+</html>

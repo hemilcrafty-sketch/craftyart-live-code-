@@ -1,0 +1,144 @@
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    /* Adjust width as needed */
+    font-size: 14px;
+}
+
+.category {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+}
+
+
+.subcategories {
+    display: block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ql-margin {
+    width: 55px !important;
+    font-size: 14px !important;
+}
+
+.ql-margin::after {
+    content: 'Margin';
+}
+
+.ql-formats:has(.ql-custom) {
+    position: relative !important;
+  }
+
+.ql-custom {
+    width: 40px !important;
+    font-size: 14px !important;
+}
+
+.ql-custom::after {
+    content: '🎨';
+}
+.ql-copy::after {
+    content: '📋';
+}
+
+.subcategory {
+    padding: 2px 40px;
+    cursor: pointer;
+    /* border-bottom: 1px solid #ccc; */
+}
+
+.subcategories .subcategory {
+    padding-left: 20px;
+}
+
+
+.input-subcategory-dropbox {
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    font-family: 'Inter', sans-serif;
+    color: #131e22;
+    font-weight: 400;
+    height: 45px;
+    border-color: #d4d4d4;
+    letter-spacing: .035em;
+    -webkit-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+    padding: 8px 25px;
+    position: relative;
+}
+
+.parent-category-input {
+    display: none;
+}
+
+.parent-category-input.show {
+    display: block;
+    z-index: 999;
+    position: absolute;
+    width: 100%;
+}
+
+li.category.none-option {
+    background-color: #efefef87;
+    height: 29px;
+    padding: 5px 20px;
+}
+
+.input-subcategory-dropbox i.fa.down-arrow-dropbox {
+    position: absolute;
+    right: 8px;
+    color: #131e22;
+    font-weight: 700;
+    top: 30%;
+}
+
+.has-children {
+    font-weight: bold;
+}
+
+.has-parent {
+    font-weight: 300;
+}
+
+.form-group.category-dropbox-wrap {
+    position: relative;
+}
+
+ul.dropdown-menu-ul.filter-wrap-list {
+    overflow-y: scroll;
+    height: auto;
+    max-height: 320px;
+}
+
+.input-subcategory-dropbox.unset-bottom-border {
+    border-bottom: unset;
+}
+
+input#categoryFilter {
+    width: 90%;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.custom-dropdown.parent-category-input.show {
+    background-color: #FFF;
+    border: 1px solid #ced4da;
+    border-top: 0;
+}
