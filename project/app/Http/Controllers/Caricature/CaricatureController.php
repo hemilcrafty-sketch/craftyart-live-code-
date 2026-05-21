@@ -210,7 +210,8 @@ class CaricatureController extends ApiController
                 'category_thumb' => HelperController::$mediaUrl . $category->category_thumb,
                 'category_mockup' => $category->mockup ? HelperController::$mediaUrl . $category->mockup : null,
                 'isLastPage' => $templates->total() <= $limit,
-                'pageNo' => 1
+                'pageNo' => 1,
+                'attire_counts' => $templates->total(),
             ];
 
             if ($index == 0) {
@@ -477,9 +478,11 @@ class CaricatureController extends ApiController
     {
         if (is_int($category)) $category = CaricatureCategory::findId(select: null, isStatus: 1, id: $category);
 
-        $parents = CaricatureCategory::query()->select(['id', 'id_name', 'category_name', 'category_thumb', 'cat_link'])->whereParentCategoryId(0)->where('total_templates', '>', 0)->whereStatus(1)->get();
+        $parents = CaricatureCategory::query()->select(['id', 'id_name', 'category_name', 'category_thumb', 'cat_link', 'child_cat_ids'])->whereParentCategoryId(0)->where('total_templates', '>', 0)->whereStatus(1)->get();
         $parentTags = [];
         foreach ($parents as $parent) {
+            $allIds = array_merge([$parent->id], $parent->child_cat_ids ?? []);
+            $count = Attire::whereIn('category_id', $allIds)->where('status', 1)->count();
             $parentTags[] = [
                 'id' => $parent->id,
                 'category_name' => $parent->category_name,
@@ -488,6 +491,7 @@ class CaricatureController extends ApiController
                 'link' => $parent->cat_link,
                 'id_name' => $parent->id_name,
                 'status' => 1,
+                'attire_counts' => $count,
             ];
         }
 
@@ -506,8 +510,10 @@ class CaricatureController extends ApiController
     private static function getChilds(CaricatureCategory|null $category): array
     {
         $childs = [];
-        if ($category && !$category->parent) {
+        if ($category && !$category->parent && is_iterable($category->subcategories)) {
             foreach ($category->subcategories as $subcategory) {
+                $allIds = array_merge([$subcategory->id], $subcategory->child_cat_ids ?? []);
+                $count = Attire::whereIn('category_id', $allIds)->where('status', 1)->count();
                 $childs[] = [
                     'id' => $subcategory->id,
                     'category_name' => $subcategory->category_name,
@@ -516,6 +522,7 @@ class CaricatureController extends ApiController
                     'link' => $subcategory->cat_link,
                     'id_name' => $subcategory->id_name,
                     'status' => $subcategory->status,
+                    'attire_counts' => $count,
                 ];
             }
         }
