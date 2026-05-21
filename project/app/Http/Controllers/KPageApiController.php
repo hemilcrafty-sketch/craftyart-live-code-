@@ -44,14 +44,16 @@ class KPageApiController extends ApiController
         }
 
         $oldSlug = $request->id;
-        if (!$oldSlug) return ResponseHandler::sendResponse($request, new ResponseInterface(401, false, "Parameters missing!"), true, true);
+        if (!$oldSlug)
+            return ResponseHandler::sendResponse($request, new ResponseInterface(401, false, "Parameters missing!"), true, true);
 
         $hasPageInRequest = $request->has('page');
         $data = HelperController::extractAndRemoveTrailingNumber($oldSlug);
         $page = $hasPageInRequest ? $request->input('page', 1) : $data['number'] ?? 1;
         $keyName = $data['string'] ?? 1;
 
-        if ($this->uid && empty(DomainChecker::getDomainName($request))) $page = 1;
+        if ($this->uid && empty(DomainChecker::getDomainName($request)))
+            $page = 1;
 
         $filter = isset($request->filter) ? $request->filter : [];
 
@@ -60,9 +62,9 @@ class KPageApiController extends ApiController
         $faqCacheKey = 'kp_faq_' . $keyName;
 
         $cacheKey = 'kp_' . $keyName . md5(json_encode([
-                'filter' => json_encode($filter),
-                'page' => $page,
-            ]));
+            'filter' => json_encode($filter),
+            'page' => $page,
+        ]));
 
         $page_link = HelperController::$webPageUrl . 'k/' . $keyName;
 
@@ -98,7 +100,7 @@ class KPageApiController extends ApiController
             }
 
             $itemData = $templatesQuery->orderByRaw('pinned DESC, id DESC')->paginate($limit, ['*'], 'page', $page);
-//            $itemData = $templatesQuery->orderByRaw('pinned DESC, web_views DESC, id DESC')->paginate($limit, ['*'], 'page', $page);
+            //            $itemData = $templatesQuery->orderByRaw('pinned DESC, web_views DESC, id DESC')->paginate($limit, ['*'], 'page', $page);
 
             $rates = RateController::getRates();
 
@@ -145,11 +147,11 @@ class KPageApiController extends ApiController
             $response['meta_title'] = $keyData->meta_title;
             $response['meta_desc'] = $keyData->meta_desc;
             $response['short_desc'] = $keyData->short_desc;
-            if ($page == 1) {
-                $response['h2_tag'] = $keyData->h2_tag;
-                $response['long_desc'] = $keyData->long_desc;
-                $response['contents'] = isset($keyData->contents) ? ContentManager::getContentsPath(rates: $rates, contents: json_decode(StorageUtils::get($keyData->contents)), uid: $this->uid, cacheTag: $cacheTag, cacheKey: $contentCacheKey, doCache: $doCache) : [];
-            }
+            // if ($page == 1) {
+            $response['h2_tag'] = $keyData->h2_tag;
+            $response['long_desc'] = $keyData->long_desc;
+            $response['contents'] = isset($keyData->contents) ? ContentManager::getContentsPath(rates: $rates, contents: json_decode(StorageUtils::get($keyData->contents)), uid: $this->uid, cacheTag: $cacheTag, cacheKey: $contentCacheKey, doCache: $doCache) : [];
+            // }
             $response['top_keywords'] = isset($keyData->top_keywords) ? HelperController::getTopKeywords(json_decode($keyData->top_keywords)) : [];
             $response['page_slug_history'] = PageSlugHistoryController::get(0);
             $response['canonical_link'] = PaginationController::buildCanonicalLink($keyData->canonical_link, $page_link, $page);
@@ -172,7 +174,8 @@ class KPageApiController extends ApiController
             $response = $callback(false);
         }
 
-        if (!$response['success']) $response = $callback(false);
+        if (!$response['success'])
+            $response = $callback(false);
 
         if (isset($response['success']) && $response['success']) {
             $user_data = UserData::where("uid", $this->uid)->first();
